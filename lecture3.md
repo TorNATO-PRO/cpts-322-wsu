@@ -48,7 +48,7 @@ To run, you simply save this as `hello.py` and then go `python hello.py`.
   - Create HTML templates (02_FlaskForms)
   - Create links between pages (03_FlaskForms_linkpages)
 
-### Code example
+### Code example - Templates
 
 Directory Stucture:
 
@@ -92,3 +92,47 @@ if __name__ == '__main__':
     app.run(debug=True)
 ```
 
+### Code Example - Linking Pages
+
+Directory Stucture:
+
+- templates/
+  - course.html
+  - index.html
+- app.py
+- README.md
+
+**course.html**
+```html
+<h1>Hello, {{name}} class!</h1>
+<p>Click <a href=" {{url_for('index')}}">here</a> to return back to main page!</p>
+```
+
+**index.html**
+```html
+<h1>Hello!</h1>
+<p>Please choose your class: </p>
+<ul>
+    <li><a href="{{ url_for('course',name='CptS322')}}"> CptS 322 </a></li>
+    <li><a href="{{ url_for('course',name='CptS355')}}"> CptS 355</a></li>
+    <li><a href="{{ url_for('course',name='CptS321')}}"> CptS 321</a></li>
+    <li><a href="{{ url_for('course',name='CptS451')}}"> CptS 451</a></li>
+</ul>
+```
+
+**app.py**
+```python
+from flask import Flask, render_template
+app = Flask(__name__)
+
+@app.route('/')
+def index():
+    return render_template('index.html')
+
+@app.route('/course/<name>')
+def course(name):
+    return render_template('course.html', name=name)
+
+if __name__ == '__main__':
+    app.run(debug=True)
+```
